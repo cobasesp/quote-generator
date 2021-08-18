@@ -6,6 +6,7 @@ function App() {
 
   const [quote, setQuote] = useState(null);
   const [quotes, setQuotes] = useState([]);
+  const [currentAuthor, setAuthor] = useState(null);
 
   useEffect(() => {
     getQuote();
@@ -16,6 +17,7 @@ function App() {
     .then(response => {
       setQuote(response.data.data[0]);
       setQuotes([]);
+      setAuthor(null);
     })
     .catch(error => {
       console.log(error)
@@ -29,6 +31,7 @@ function App() {
     .then(response => {
       setQuote(null);
       setQuotes(response.data.data);
+      setAuthor(author);
     })
     .catch(error => {
       console.log(error)
@@ -38,7 +41,7 @@ function App() {
 
   return (
     <div id="content">
-      <button onClick={() => {setQuote(null); getQuote();}}><span class="material-icons">cached</span>Random</button>
+      <button id="random" onClick={() => {setQuote(null); getQuote();}}><span class="material-icons">cached</span>Random</button>
 
       { quote != null && quotes.length == 0 && <div className="quote">
         <div className="text">{quote.quoteText}</div>
@@ -52,9 +55,10 @@ function App() {
       </div>}
 
       { quotes.length > 0 && <div className="quotes-list">
+          <h2>{currentAuthor}</h2>
           {quotes.map(q => (
-            <div key={q._id}>
-              <p>{q.quoteText}</p>
+            <div class="quote quote-list" key={q._id}>
+              <div className="text">{q.quoteText}</div>
             </div>
           ))}
         </div>
